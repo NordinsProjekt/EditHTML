@@ -56,7 +56,8 @@ public static class StringExtensions
         
         for (var i = index; i < max; i++)
         {
-            if (htmlText[i] == ' ') return htmlText.Substring(index + 1, i-index);
+            if (htmlText[i] == ' ') return htmlText.Substring(index + 1, i-index-1);
+            if (htmlText[i] == '>') return htmlText.Substring(index + 1, i-index-1);
         }
 
         return "";

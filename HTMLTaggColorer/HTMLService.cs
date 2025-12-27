@@ -1,6 +1,4 @@
-﻿using HTMLTaggColorer;
-
-namespace HTMLTagColorer;
+﻿namespace HTMLTagColorer;
 
 public static class HtmlService
 {
@@ -15,7 +13,7 @@ public static class HtmlService
                 var tagLength = htmlText.GetHtmlTagLength(i);
                 var tag = htmlText.GetHtmlKeyword(i).Split(' ')[0];
 
-                Console.ForegroundColor = HtmlKeywords.Tags.Contains(tag) ? ConsoleColor.Green : ConsoleColor.White;
+                Console.ForegroundColor = HtmlKeywords.DoesTagExist(tag) ? ConsoleColor.Green : ConsoleColor.White;
 
                 Console.Write(htmlText.Substring(i, tagLength));
                 i += tagLength - 1;
