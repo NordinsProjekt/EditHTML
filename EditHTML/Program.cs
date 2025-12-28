@@ -4,7 +4,7 @@ using HTMLTagColorer;
 
 namespace EditHTML
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -46,13 +46,25 @@ namespace EditHTML
                 var maxLeftForCurrentRow = currentTop < lines.Length 
                     ? lines[currentTop].TrimEnd('\r').Length 
                     : 0;
-                
-                var newCursorPosition = consoleCursorService.GetNewCursorPositionAfterNavigationKeys(
-                    keyPress, 
-                    maxLeftForCurrentRow, 
-                    lines.Length - 1);
+
+                var isNavigationalKey = ReadConsoleService.IsNavigationKey(keyPress.Key);
+
+                if(isNavigationalKey)
+                {
+                    var newCursorPosition = consoleCursorService.GetNewCursorPositionAfterNavigationKeys(
+                        keyPress,
+                        maxLeftForCurrentRow,
+                        lines.Length - 1);
+
+                    Console.SetCursorPosition(newCursorPosition.Left, newCursorPosition.Top);
+                }
+                else
+                {
                     
-                Console.SetCursorPosition(newCursorPosition.Left, newCursorPosition.Top);
+                    consoleCursorService.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
+                }
+                
+
             }
         }
     }
