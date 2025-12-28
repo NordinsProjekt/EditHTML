@@ -2,6 +2,7 @@
   <Folder Name="/5. Unittests/">
     <Project Path="HTMLTagColorerTests/HTMLTagColorerTests.csproj" Id="9149582f-7489-423a-80f3-2ae2e9b8d169" />
   </Folder>
+  <Project Path="ConsoleEditLogic/ConsoleEditLogic.csproj" Id="1f197605-ed4b-4762-9469-c209f4f45822" />
   <Project Path="EditHTML/EditHTML.csproj" />
   <Project Path="HTMLTaggColorer/HTMLTagColorer.csproj" Id="dcbfe659-5863-4e0b-bf97-90015670b34c" />
 </Solution>

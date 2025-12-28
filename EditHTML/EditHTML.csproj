@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleEditLogic\ConsoleEditLogic.csproj" />
     <ProjectReference Include="..\HTMLTaggColorer\HTMLTagColorer.csproj" />
   </ItemGroup>
 
