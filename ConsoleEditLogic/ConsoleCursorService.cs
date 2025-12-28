@@ -1,13 +1,15 @@
-﻿namespace ConsoleEditLogic;
+﻿using System.Numerics;
+
+namespace ConsoleEditLogic;
 
 public class ConsoleCursorService(int left, int top)
 {
     private int _left = left;
     private int _top = top;
 
-    public CursorPosition GetNewCursorPosition(ConsoleKey keyPressed)
+    public CursorPosition GetNewCursorPositionAfterNavigationKeys(ConsoleKeyInfo keyPressed, int currentMaxLeft, int currentMaxTop)
     {
-        switch (keyPressed)
+        switch (keyPressed.Key)
         {
             case ConsoleKey.LeftArrow:
                 if(_left-1 >= 0)
@@ -15,6 +17,7 @@ public class ConsoleCursorService(int left, int top)
                 break;
             
             case ConsoleKey.RightArrow:
+                if (_left + 1 <= currentMaxLeft)
                     _left += 1; 
                 break;
             
@@ -24,21 +27,52 @@ public class ConsoleCursorService(int left, int top)
                 break;
             
             case ConsoleKey.DownArrow:
-                _top += 1;
+                if (_top + 1 <= currentMaxTop)
+                    _top += 1;
                 break;
-            
+
+            case ConsoleKey.Home:
+                _top = 0;
+                break;
+
+            case ConsoleKey.End:
+                _top = currentMaxTop;
+                break;
+
+            case ConsoleKey.PageUp:
+                if (_top - 20 >= 0)
+                    _top -= 20;
+                else
+                    _top = 0;
+                break;
+
+            case ConsoleKey.PageDown:
+                if (_top + 20 <= currentMaxTop)
+                    _top += 20;
+                else
+                    _top = currentMaxTop;
+                break;
+
+            case ConsoleKey.Tab:
+                if (keyPressed.Modifiers.HasFlag(ConsoleModifiers.Shift))
+                {
+                    // Shift+Tab - move left
+                    _left = Math.Max(0, _left - 10);
+                }
+                else
+                {
+                    // Tab only - move right
+                    if(_left+10 <=  currentMaxLeft) _left += 10;
+                }
+                break;
+
             case ConsoleKey.None:
             case ConsoleKey.Backspace:
-            case ConsoleKey.Tab:
             case ConsoleKey.Clear:
             case ConsoleKey.Enter:
             case ConsoleKey.Pause:
             case ConsoleKey.Escape:
             case ConsoleKey.Spacebar:
-            case ConsoleKey.PageUp:
-            case ConsoleKey.PageDown:
-            case ConsoleKey.End:
-            case ConsoleKey.Home:
             case ConsoleKey.Select:
             case ConsoleKey.Print:
             case ConsoleKey.Execute:

@@ -17,10 +17,15 @@ namespace EditHTML
             //}
 
             string content;
+            string[] lines = [];
             try
             {
                 using var sr = new StreamReader("index.html", Encoding.UTF8);
                 content = sr.ReadToEnd();
+                
+                // Split content into lines to track line lengths
+                lines = content.Split('\n');
+                
                 HtmlService.ParseHtml(content);
                 Console.ResetColor();
             }
@@ -33,7 +38,20 @@ namespace EditHTML
             while (true)
             {
                 var keyPress = Console.ReadKey(true);
-                var newCursorPosition = consoleCursorService.GetNewCursorPosition(keyPress.Key);
+                
+                // Get the current cursor position to determine which line we're on
+                var currentTop = Console.GetCursorPosition().Top;
+                
+                // Get max left for current row (line length), default to 0 if out of bounds
+                var maxLeftForCurrentRow = currentTop < lines.Length 
+                    ? lines[currentTop].TrimEnd('\r').Length 
+                    : 0;
+                
+                var newCursorPosition = consoleCursorService.GetNewCursorPositionAfterNavigationKeys(
+                    keyPress, 
+                    maxLeftForCurrentRow, 
+                    lines.Length - 1);
+                    
                 Console.SetCursorPosition(newCursorPosition.Left, newCursorPosition.Top);
             }
         }
