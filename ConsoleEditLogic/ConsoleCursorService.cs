@@ -2,7 +2,7 @@
 
 namespace ConsoleEditLogic;
 
-public class ConsoleCursorService(int left, int top)
+public class ConsoleCursorService(int left = 0, int top = 0)
 {
     private int _left = left;
     private int _top = top;

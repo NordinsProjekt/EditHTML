@@ -8,7 +8,7 @@ namespace EditHTML
     {
         static void Main(string[] args)
         {
-            var consoleCursorService = new ConsoleCursorService(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top);
+            var consoleCursorService = new ConsoleCursorService();
             Console.CursorVisible = true;
             //if (args.Length == 0)
             //{
@@ -28,11 +28,15 @@ namespace EditHTML
                 
                 HtmlService.ParseHtml(content);
                 Console.ResetColor();
+                Console.SetCursorPosition(0, 0);
+                consoleCursorService.SetCursorPosition(0, 0);
+                
             }
             catch (Exception e)
             {
                 Console.ResetColor();
                 Console.WriteLine(e.Message);
+                return;
             }
 
             while (true)
@@ -60,11 +64,10 @@ namespace EditHTML
                 }
                 else
                 {
-                    
-                    consoleCursorService.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
+                    var newCursorPosition = EditConsoleTextService.EditConsoleLine(keyPress, lines, Console.CursorLeft, Console.CursorTop);
+                    Console.SetCursorPosition(newCursorPosition.Left, newCursorPosition.Top);
+                    consoleCursorService.SetCursorPosition(newCursorPosition.Left, newCursorPosition.Top);
                 }
-                
-
             }
         }
     }
