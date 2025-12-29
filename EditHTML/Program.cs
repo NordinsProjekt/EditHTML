@@ -64,7 +64,7 @@ namespace EditHTML
                 }
                 else
                 {
-                    var newCursorPosition = EditConsoleTextService.EditConsoleLine(keyPress, lines, Console.CursorLeft, Console.CursorTop);
+                    var newCursorPosition = EditConsoleTextService.EditConsoleLine(keyPress, ref lines, Console.CursorLeft, Console.CursorTop);
                     Console.SetCursorPosition(newCursorPosition.Left, newCursorPosition.Top);
                     consoleCursorService.SetCursorPosition(newCursorPosition.Left, newCursorPosition.Top);
                 }
