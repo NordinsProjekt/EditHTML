@@ -1,87 +1,93 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Net.Http;
 
 namespace ConsoleEditLogic;
 
 public static class EditConsoleTextService
 {
-    public static CursorPosition EditConsoleLine(ConsoleKeyInfo consoleKey, ref string[] htmlContent, int cursorLeft, int cursorTop)
+    public static TextServiceResult EditConsoleLine(ConsoleKeyInfo consoleKey, ref string[] htmlContent, int cursorLeft, int cursorTop)
     {
-        string newLine = "";
-        string oldLine = "";
-        switch(consoleKey.Key)
+        // Bounds check - prevent accessing beyond array
+        if (cursorTop >= htmlContent.Length)
+        {
+            return new(0, htmlContent.Length - 1, false);
+        }
+        
+        // Ensure cursorLeft is within bounds of current line
+        if (cursorLeft > htmlContent[cursorTop].Length)
+        {
+            cursorLeft = htmlContent[cursorTop].Length;
+        }
+
+        int savedWindowTop = 0;
+        switch (consoleKey.Key)
         {
             case ConsoleKey.Enter:
-                oldLine = htmlContent[cursorTop].Substring(0, cursorLeft);
-                newLine = htmlContent[cursorTop].Substring(cursorLeft);
-
-                htmlContent[cursorTop] = oldLine;
-
-                var list = htmlContent.ToList();
-                list.Insert(cursorTop + 1, newLine);
-                htmlContent = list.ToArray();
 
                 // Save current window position
-                int savedWindowTop = Console.WindowTop;
+                savedWindowTop = Console.WindowTop;
 
-                for (int i = cursorTop; i < htmlContent.Length; i++)
-                {
-                    OverwriteConsoleLine(htmlContent[i], i);
-                }
+                ConsoleCommandService.EnterCommand(ref htmlContent, cursorLeft, cursorTop);
 
                 // Restore window position to prevent scrolling
                 Console.SetWindowPosition(0, savedWindowTop);
 
-                return new CursorPosition(0, cursorTop+1);
+                return new(0, cursorTop + 1, false);
 
             case ConsoleKey.Backspace:
+                if (cursorLeft == 0 && cursorTop > 0)
+                {
+                    // Get the length of the previous line before appending
+                    int previousLineLength = htmlContent[cursorTop - 1].Length;
+                    ConsoleCommandService.BackSpaceCommandLeftIndexZero(ref htmlContent, cursorTop, ref savedWindowTop);
+
+                    return new(previousLineLength, cursorTop -1, false);
+                }
+
                 if (cursorLeft > 0)
                 {
-                    newLine = htmlContent[cursorTop].Remove(cursorLeft - 1, 1);
-                    htmlContent[cursorTop] = newLine;
-                    OverwriteConsoleLine(htmlContent[cursorTop], cursorTop);
-                    return new CursorPosition(cursorLeft-1, cursorTop);
+                    ConsoleCommandService.BackSpaceCommand(htmlContent, cursorLeft, cursorTop);
+                    return new(cursorLeft-1, cursorTop, false);
                 }
-                return new CursorPosition(cursorLeft, cursorTop);
+                return new(cursorLeft, cursorTop, false);
+
+            case ConsoleKey.Delete:
+                if(cursorLeft == htmlContent[cursorTop].Length)
+                {
+                    ConsoleCommandService.DeleteCommandLeftIndexMax(ref htmlContent, cursorLeft, cursorTop, ref savedWindowTop);
+                    return new(cursorLeft, cursorTop, false);
+                }
+                else
+                {
+                    ConsoleCommandService.DeleteCommand(htmlContent, cursorLeft, cursorTop);
+                    return new(cursorLeft, cursorTop, false);
+                }
 
             case ConsoleKey.Spacebar:
-                newLine = htmlContent[cursorTop].Insert(cursorLeft, " ");
-                htmlContent[cursorTop] = newLine;
-                OverwriteConsoleLine(htmlContent[cursorTop], cursorTop);
-                return new CursorPosition(cursorLeft+1, cursorTop);
+                htmlContent[cursorTop] = htmlContent[cursorTop].Insert(cursorLeft, " ");
+                DisplayService.OverwriteConsoleLine(htmlContent[cursorTop], cursorTop);
+
+                return new(cursorLeft+1, cursorTop, false);
 
             case ConsoleKey.S:
                 if (consoleKey.Modifiers.HasFlag(ConsoleModifiers.Control))
                 {
-                    //TODO
-                    //Overwrite the html file with the array
-                    //Trigger a console redraw with HTML colors
-                    return new CursorPosition(cursorLeft, cursorTop);
+                    return new(cursorLeft, cursorTop, true);
                 }
                 else
                 {
-                    //Just a normal S
-                    newLine = htmlContent[cursorTop].Insert(cursorLeft, consoleKey.KeyChar.ToString());
-                    htmlContent[cursorTop] = newLine;
-                    OverwriteConsoleLine(htmlContent[cursorTop], cursorTop);
-                    return new CursorPosition(cursorLeft + 1, cursorTop);
+                    htmlContent[cursorTop] = htmlContent[cursorTop].Insert(cursorLeft, consoleKey.KeyChar.ToString());
+                    DisplayService.OverwriteConsoleLine(htmlContent[cursorTop], cursorTop);
+
+                    return new(cursorLeft+1, cursorTop, false);
                 }
 
             default:
-                newLine = htmlContent[cursorTop].Insert(cursorLeft, consoleKey.KeyChar.ToString());
-                htmlContent[cursorTop] = newLine;
-                OverwriteConsoleLine(htmlContent[cursorTop], cursorTop);
-                return new CursorPosition(cursorLeft + 1, cursorTop);
+                htmlContent[cursorTop] = htmlContent[cursorTop].Insert(cursorLeft, consoleKey.KeyChar.ToString());
+                DisplayService.OverwriteConsoleLine(htmlContent[cursorTop], cursorTop);
+
+                return new(cursorLeft+1, cursorTop, false);
         }
     }
 
-    private static void OverwriteConsoleLine(string newLine, int cursorTop)
-    {
-        Console.CursorVisible = false;
-        Console.SetCursorPosition(0, cursorTop);
-        // Clear the entire line
-        Console.Write(new string(' ', Console.WindowWidth));
-        Console.SetCursorPosition(0, cursorTop);
-        Console.Write(newLine);
-        Console.CursorVisible = true;
-    }
+
 }

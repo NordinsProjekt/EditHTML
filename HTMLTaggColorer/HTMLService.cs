@@ -64,6 +64,11 @@ public static class HtmlService
         }
     }
 
+    public static void FindLoneHtmlTag()
+    {
+
+    }
+
     private static void PrintTheColoredProps(string key, string propsValue)
     {
         Console.ForegroundColor = HtmlKeywords.DoesPropertyExist(key) ? ConsoleColor.Yellow : ConsoleColor.White;

@@ -81,9 +81,3 @@ public class ConsoleCursorService(int left = 0, int top = 0)
         _top = top;
     }
 }
-
-public class CursorPosition(int left, int top)
-{
-    public int Left { get; init; } = left;
-    public int Top { get; init; } = top;
-}
