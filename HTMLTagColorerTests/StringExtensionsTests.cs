@@ -1,4 +1,4 @@
-﻿using HTMLTagColorer;
+﻿using HTMLTagColorer.Extensions;
 
 namespace HTMLTagColorerTests;
 

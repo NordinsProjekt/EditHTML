@@ -1,4 +1,6 @@
-﻿namespace HTMLTagColorer;
+﻿using HTMLTagColorer.Extensions;
+
+namespace HTMLTagColorer;
 
 public static class HtmlService
 {

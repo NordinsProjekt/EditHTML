@@ -1,6 +1,6 @@
 ﻿using ConsoleEditLogic;
+using ConsoleEditLogic.Dtos;
 using HTMLTagColorer;
-using System;
 using System.Text;
 
 namespace EditHTML
@@ -22,13 +22,13 @@ namespace EditHTML
             try
             {
                 content = ReadFromHtml(fileName);
-                
+
                 // Split content into lines to track line lengths
                 lines = content.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
 
-                RedrawScreen(content, new CursorPosition(0,0));
+                RedrawScreen(content, new CursorPosition(0, 0));
                 consoleCursorService.SetCursorPosition(0, 0);
-                
+
             }
             catch (Exception e)
             {
@@ -40,23 +40,23 @@ namespace EditHTML
             while (true)
             {
                 var keyPress = Console.ReadKey(true);
-                
+
                 // Get the current cursor position to determine which line we're on
                 var currentTop = Console.GetCursorPosition().Top;
                 var currentLeft = Console.GetCursorPosition().Left;
-                
+
                 // Clamp cursor position to valid array bounds
                 if (currentTop >= lines.Length)
                 {
                     currentTop = lines.Length - 1;
                     Console.SetCursorPosition(currentLeft, currentTop);
                 }
-                
+
                 // Get max left for current row (line length), default to 0 if out of bounds
-                var maxLeftForCurrentRow = currentTop < lines.Length 
-                    ? lines[currentTop].TrimEnd('\r').Length 
+                var maxLeftForCurrentRow = currentTop < lines.Length
+                    ? lines[currentTop].TrimEnd('\r').Length
                     : 0;
-                
+
                 // Clamp left position to current line length
                 if (currentLeft > maxLeftForCurrentRow)
                 {
@@ -66,7 +66,7 @@ namespace EditHTML
 
                 var isNavigationalKey = ReadConsoleService.IsNavigationKey(keyPress.Key);
 
-                if(isNavigationalKey)
+                if (isNavigationalKey)
                 {
                     var newCursorPosition = consoleCursorService.GetNewCursorPositionAfterNavigationKeys(
                         keyPress,

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using ConsoleEditLogic.Dtos;
+using System.Net.Http;
 
 namespace ConsoleEditLogic;
 

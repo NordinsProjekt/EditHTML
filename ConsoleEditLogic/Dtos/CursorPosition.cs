@@ -1,4 +1,4 @@
-﻿namespace ConsoleEditLogic;
+﻿namespace ConsoleEditLogic.Dtos;
 
 public class CursorPosition(int left, int top)
 {

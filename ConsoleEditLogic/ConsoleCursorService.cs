@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+﻿using ConsoleEditLogic.Dtos;
 
 namespace ConsoleEditLogic;
 
@@ -12,20 +12,20 @@ public class ConsoleCursorService(int left = 0, int top = 0)
         switch (keyPressed.Key)
         {
             case ConsoleKey.LeftArrow:
-                if(_left-1 >= 0)
-                    _left-= 1; 
+                if (_left - 1 >= 0)
+                    _left -= 1;
                 break;
-            
+
             case ConsoleKey.RightArrow:
                 if (_left + 1 <= currentMaxLeft)
-                    _left += 1; 
+                    _left += 1;
                 break;
-            
+
             case ConsoleKey.UpArrow:
                 if (_top - 1 >= 0)
                     _top -= 1;
                 break;
-            
+
             case ConsoleKey.DownArrow:
                 if (_top + 1 <= currentMaxTop)
                     _top += 1;
@@ -62,7 +62,7 @@ public class ConsoleCursorService(int left = 0, int top = 0)
                 else
                 {
                     // Tab only - move right
-                    if(_left+10 <=  currentMaxLeft) _left += 10;
+                    if (_left + 10 <= currentMaxLeft) _left += 10;
                 }
                 break;
 
