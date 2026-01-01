@@ -3,6 +3,11 @@ namespace EditHTML;
 
 public static class ReadConsoleService
 {
+    /// <summary>
+    /// Determines whether the specified console key is treated as a navigation key.
+    /// </summary>
+    /// <param name="consoleKey">The <see cref="ConsoleKey"/> value to evaluate.</param>
+    /// <returns><c>true</c> if the key is considered a navigation key; otherwise, <c>false</c>.</returns>
     public static bool IsNavigationKey(ConsoleKey consoleKey)
     {
         switch (consoleKey)

@@ -60,7 +60,7 @@ public static class ConsoleCommandService
         DisplayService.OverwriteConsoleLine(htmlContent[cursorTop], cursorTop);
     }
 
-    public static void DeleteCommand(string[]htmlContent, int cursorLeft, int CursorTop)
+    public static void DeleteCommand(string[] htmlContent, int cursorLeft, int CursorTop)
     {
         var newLine = "";
         newLine = htmlContent[CursorTop].Remove(cursorLeft, 1);
@@ -70,11 +70,17 @@ public static class ConsoleCommandService
 
     public static void DeleteCommandLeftIndexMax(ref string[] htmlContent, int cursorLeft, int cursorTop, ref int savedWindowTop)
     {
-        htmlContent[cursorTop] += htmlContent[cursorTop+1];
+        if (cursorTop >= htmlContent.Length - 1)
+        {
+            // No next line to merge with; nothing to do.
+            return;
+        }
+
+        htmlContent[cursorTop] += htmlContent[cursorTop + 1];
 
         // Remove current line from array
         var tempList = htmlContent.ToList();
-        tempList.RemoveAt(cursorTop+1);
+        tempList.RemoveAt(cursorTop + 1);
         htmlContent = tempList.ToArray();
 
         // Save current window position
