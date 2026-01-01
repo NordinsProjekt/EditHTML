@@ -1,5 +1,7 @@
 <Solution>
   <Folder Name="/5. Unittests/">
+    <Project Path="ConsoleEditLogicTests/ConsoleEditLogicTests.csproj" Id="4a5bf5cb-1464-4f97-bffb-086125807447" />
+    <Project Path="EditHTMLTests/EditHTMLTests.csproj" Id="a1f68741-939a-43b3-846e-6add1f7833b7" />
     <Project Path="HTMLTagColorerTests/HTMLTagColorerTests.csproj" Id="9149582f-7489-423a-80f3-2ae2e9b8d169" />
   </Folder>
   <Project Path="ConsoleEditLogic/ConsoleEditLogic.csproj" Id="1f197605-ed4b-4762-9469-c209f4f45822" />

@@ -1,4 +1,6 @@
-﻿namespace HTMLTagColorer;
+﻿using HTMLTagColorer.Extensions;
+
+namespace HTMLTagColorer;
 
 public static class HtmlService
 {
@@ -62,6 +64,15 @@ public static class HtmlService
                 Console.Write(htmlText[i]);
             }
         }
+    }
+
+    /// <summary>
+    /// Finds unclosed or improperly matched HTML tags in the document.
+    /// </summary>
+    /// <remarks>This method is not yet implemented.</remarks>
+    public static void FindLoneHtmlTag()
+    {
+        throw new NotImplementedException("FindLoneHtmlTag is not implemented yet.");
     }
 
     private static void PrintTheColoredProps(string key, string propsValue)

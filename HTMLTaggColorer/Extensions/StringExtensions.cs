@@ -1,4 +1,4 @@
-﻿namespace HTMLTagColorer;
+﻿namespace HTMLTagColorer.Extensions;
 
 public static class StringExtensions
 {
