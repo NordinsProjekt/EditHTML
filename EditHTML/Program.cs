@@ -77,16 +77,16 @@ namespace EditHTML
                 }
                 else
                 {
-                    var EditConsoleResult = EditConsoleTextService.EditConsoleLine(keyPress, ref lines, Console.CursorLeft, Console.CursorTop);
-                    Console.SetCursorPosition(EditConsoleResult.CursorPosition.Left, EditConsoleResult.CursorPosition.Top);
-                    consoleCursorService.SetCursorPosition(EditConsoleResult.CursorPosition.Left, EditConsoleResult.CursorPosition.Top);
-                    if (EditConsoleResult.RedrawScreen)
+                    var editConsoleResult = EditConsoleTextService.EditConsoleLine(keyPress, ref lines, Console.CursorLeft, Console.CursorTop);
+                    Console.SetCursorPosition(editConsoleResult.CursorPosition.Left, editConsoleResult.CursorPosition.Top);
+                    consoleCursorService.SetCursorPosition(editConsoleResult.CursorPosition.Left, editConsoleResult.CursorPosition.Top);
+                    if (editConsoleResult.RedrawScreen)
                     {
                         WriteToHtml(lines, fileName);
                         content = ReadFromHtml(fileName);
                         lines = content.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
-                        RedrawScreen(content, EditConsoleResult.CursorPosition);
-                        Console.SetCursorPosition(EditConsoleResult.CursorPosition.Left, EditConsoleResult.CursorPosition.Top);
+                        RedrawScreen(content, editConsoleResult.CursorPosition);
+                        Console.SetCursorPosition(editConsoleResult.CursorPosition.Left, editConsoleResult.CursorPosition.Top);
                     }
                 }
             }
